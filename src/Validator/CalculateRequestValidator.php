@@ -12,21 +12,19 @@ readonly class CalculateRequestValidator
     {
     }
 
-    public function process(array $data): void
+    public function validate(array $data): void
     {
         $constraints = new Assert\Collection([
             'fields' => [
-                'product'    => new Assert\Required([
-                    new Assert\NotBlank(['message' => 'Product ID is required']
-                    ),
+                'product' => new Assert\Required([
+                    new Assert\NotBlank(['message' => 'Product ID is required']),
                     new Assert\Type([
                         'type'    => 'integer',
-                        'message' => 'Product ID must be an integer',
+                        'message' => 'Product ID must be a number',
                     ]),
                 ]),
-                'taxNumber'  => new Assert\Required([
-                    new Assert\NotBlank(['message' => 'Tax number is required']
-                    ),
+                'taxNumber' => new Assert\Required([
+                    new Assert\NotBlank(['message' => 'Tax number is required']),
                     new Assert\Regex([
                         'pattern' => '/^[A-Za-z]{2,}\d*$/',
                         'message' => 'Invalid tax number format',
@@ -38,6 +36,7 @@ readonly class CalculateRequestValidator
                         'message' => 'Coupon code must be a string',
                     ]),
                 ]),
+                'paymentProcessor' => new Assert\Optional(),
             ],
         ]);
 
