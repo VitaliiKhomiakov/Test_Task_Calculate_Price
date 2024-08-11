@@ -15,7 +15,7 @@ class CalculateControllerTest extends WebTestCase
 
         $data = [
             'product' => $product->getId(),
-            'taxNumber' => 'FR123456',
+            'taxNumber' => 'FR123456789',
             'couponCode' => 'P10',
         ];
 
@@ -32,7 +32,7 @@ class CalculateControllerTest extends WebTestCase
         $client = static::createClient();
         // no productId
         $data = [
-            'taxNumber' => 'FR123456',
+            'taxNumber' => 'FR123456789',
             'couponCode' => 'P10',
         ];
 

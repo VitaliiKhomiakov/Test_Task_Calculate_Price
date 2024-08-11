@@ -16,7 +16,7 @@ class PurchaseControllerTest extends WebTestCase
 
         $data = [
             'product' => $product->getId(),
-            'taxNumber' => 'FR123456',
+            'taxNumber' => 'FR123456789',
             'couponCode' => 'P10',
             'paymentProcessor' => PaymentType::PAYPAL->value,
         ];
@@ -36,7 +36,7 @@ class PurchaseControllerTest extends WebTestCase
 
         // no product id
         $data = [
-            'taxNumber' => 'FR123456',
+            'taxNumber' => 'FR123456789',
             'paymentProcessor' => PaymentType::PAYPAL->value,
         ];
 
@@ -54,7 +54,7 @@ class PurchaseControllerTest extends WebTestCase
         // invalid paymentProcessor
         $data = [
             'product' => 1,
-            'taxNumber' => 'FR123456',
+            'taxNumber' => 'FR123456789',
             'paymentProcessor' => 'INVALID_PROCESSOR',
         ];
 
@@ -72,7 +72,7 @@ class PurchaseControllerTest extends WebTestCase
         // no paymentProcessor
         $data = [
             'product' => 1,
-            'taxNumber' => 'FR123456',
+            'taxNumber' => 'FR123456789',
         ];
 
         $client->request(Request::METHOD_POST, '/purchase', [], [], ['CONTENT_TYPE' => 'application/json'], json_encode($data));

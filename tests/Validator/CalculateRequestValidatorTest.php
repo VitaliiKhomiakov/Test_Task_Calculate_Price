@@ -23,8 +23,8 @@ class CalculateRequestValidatorTest extends TestCase
     {
         $data = [
             'product' => 1,
-            'taxNumber' => 'US123456',
-            'couponCode' => 'SAVE20',
+            'taxNumber' => 'DE123456789',
+            'couponCode' => 'P10',
         ];
 
         $this->calculateRequestValidator->validate($data);
@@ -45,7 +45,7 @@ class CalculateRequestValidatorTest extends TestCase
     {
         $data = [
             'product' => 'abc',
-            'taxNumber' => 'US123456',
+            'taxNumber' => 'FR123456789',
         ];
 
         $this->expectException(ValidationException::class);
@@ -66,7 +66,7 @@ class CalculateRequestValidatorTest extends TestCase
     {
         $data = [
             'product' => 1,
-            'taxNumber' => '123456US',
+            'taxNumber' => '123456FR',
         ];
 
         $this->expectException(ValidationException::class);
@@ -77,7 +77,7 @@ class CalculateRequestValidatorTest extends TestCase
     {
         $data = [
             'product' => 1,
-            'taxNumber' => 'US123456',
+            'taxNumber' => 'FR123456789',
             'couponCode' => 123,
         ];
 

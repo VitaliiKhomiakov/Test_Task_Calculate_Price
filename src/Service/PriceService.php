@@ -47,7 +47,7 @@ class PriceService
 
     public function getCountryCodeFromTaxNumber(string $taxNumber): string
     {
-        return substr($taxNumber, 0, self::COUNTRY_CODE_LENGTH);
+        return mb_strtoupper(mb_substr($taxNumber, 0, self::COUNTRY_CODE_LENGTH));
     }
 
 }
