@@ -39,7 +39,7 @@ curl -X POST http://localhost:8337/calculate-price \
 -H "Content-Type: application/json" \
 -d '{
     "product": 1,
-    "taxNumber": "FR123456",
+    "taxNumber": "FR123456789",
     "couponCode": "F50"
 }'
 
@@ -51,7 +51,7 @@ curl -X POST http://localhost:8337/calculate-price \
 -H "Content-Type: application/json" \
 -d '{
     "product": 2,
-    "taxNumber": "FR123456",
+    "taxNumber": "FR123456789",
     "couponCode": "F50"
 }'
 
@@ -63,7 +63,7 @@ curl -X POST http://localhost:8337/calculate-price \
 -H "Content-Type: application/json" \
 -d '{
     "product": 2,
-    "taxNumber": "FR123456"
+    "taxNumber": "FR123456789"
 }'
 
 ```
@@ -87,7 +87,7 @@ curl -X POST http://localhost:8337/purchase \
 -H "Content-Type: application/json" \
 -d '{
     "product": 1,
-    "taxNumber": "FR123456",
+    "taxNumber": "FR123456789",
     "couponCode": "F50",
     "paymentProcessor": "paypal"
 }'

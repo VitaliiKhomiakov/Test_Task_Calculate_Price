@@ -5,7 +5,7 @@ Content-Type: application/json
 
 {
   "product": 1,
-  "taxNumber": "FR123456",
+  "taxNumber": "FR123456789",
   "couponCode": "F50"
 }
 
@@ -16,7 +16,7 @@ Content-Type: application/json
 
 {
   "product": 1,
-  "taxNumber": "FR123456",
+  "taxNumber": "FR123456789",
   "couponCode": "F50",
   "paymentProcessor": "paypal"
 }
