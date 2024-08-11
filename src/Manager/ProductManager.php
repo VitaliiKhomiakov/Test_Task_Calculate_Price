@@ -8,7 +8,7 @@ use App\Entity\Product;
 use App\Repository\ProductRepository;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-readonly class ProductManager
+class ProductManager
 {
     public function __construct(
         private ProductRepository $productRepository,

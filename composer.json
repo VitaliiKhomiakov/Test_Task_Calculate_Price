@@ -26,7 +26,12 @@
     ,
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.6",
-        "roave/security-advisories": "dev-latest"
+        "phpunit/phpunit": "^9.5",
+        "roave/security-advisories": "dev-latest",
+        "symfony/browser-kit": "6.4.*",
+        "symfony/css-selector": "6.4.*",
+        "symfony/phpunit-bridge": "^7.1",
+        "symfony/test-pack": "*"
     },
     "config": {
         "allow-plugins": {

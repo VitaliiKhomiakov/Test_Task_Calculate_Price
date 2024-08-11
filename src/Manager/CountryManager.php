@@ -8,7 +8,7 @@ use App\Entity\Country;
 use App\Repository\CountryRepository;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-readonly class CountryManager
+class CountryManager
 {
     public function __construct(
         private CountryRepository $couponRepository,

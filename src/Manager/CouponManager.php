@@ -8,7 +8,7 @@ use App\Entity\Coupon;
 use App\Repository\CouponRepository;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-readonly class CouponManager
+class CouponManager
 {
     public function __construct(
         private CouponRepository $couponRepository,

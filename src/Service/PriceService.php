@@ -11,7 +11,7 @@ use App\Service\DTO\CalculatePriceDTO;
 use InvalidArgumentException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-readonly class PriceService
+class PriceService
 {
     public const int COUNTRY_CODE_LENGTH = 2;
 
