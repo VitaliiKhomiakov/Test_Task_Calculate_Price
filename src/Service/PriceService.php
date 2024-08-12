@@ -13,8 +13,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PriceService
 {
-    public const int COUNTRY_CODE_LENGTH = 2;
-
     public function __construct(
         private ProductManager $productManager,
         private CouponManager $couponManager,
@@ -47,7 +45,11 @@ class PriceService
 
     public function getCountryCodeFromTaxNumber(string $taxNumber): string
     {
-        return mb_strtoupper(mb_substr($taxNumber, 0, self::COUNTRY_CODE_LENGTH));
+        if (preg_match('/^([A-Za-z]{2,})(\d{9,})$/', $taxNumber, $matches)) {
+            return mb_strtoupper($matches[1]);
+        }
+
+        throw new \InvalidArgumentException('Invalid tax number format');
     }
 
 }

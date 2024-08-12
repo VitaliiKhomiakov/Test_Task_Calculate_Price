@@ -26,7 +26,7 @@ readonly class CalculateRequestValidator
                 'taxNumber' => new Assert\Required([
                     new Assert\NotBlank(['message' => 'Tax number is required']),
                     new Assert\Regex([
-                        'pattern' => '/^[A-Za-z]{2}\d{9,}$/',
+                        'pattern' => '/^([A-Za-z]{2,})(\d{9,})$/',
                         'message' => 'Invalid tax number format',
                     ]),
                 ]),

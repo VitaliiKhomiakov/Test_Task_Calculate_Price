@@ -91,7 +91,7 @@ class PriceServiceTest extends TestCase
 
         $dto = new CalculatePriceDTO([
             'product' => 1,
-            'taxNumber' => 'DE123456',
+            'taxNumber' => 'DE123456789',
             'couponCode' => 'P10'
         ]);
 
@@ -107,7 +107,7 @@ class PriceServiceTest extends TestCase
 
         $dto = new CalculatePriceDTO([
             'product' => 999,
-            'taxNumber' => 'IT123456'
+            'taxNumber' => 'IT12345689'
         ]);
 
         $this->expectException(NotFoundHttpException::class);
@@ -116,7 +116,7 @@ class PriceServiceTest extends TestCase
 
     public function testGetCountryCodeFromTaxNumber(): void
     {
-        $result = $this->priceService->getCountryCodeFromTaxNumber('US123456');
+        $result = $this->priceService->getCountryCodeFromTaxNumber('US123456789');
         $this->assertEquals('US', $result);
     }
 }

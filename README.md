@@ -5,7 +5,7 @@
 ```shell
 ### Start
 docker compose up -d
-docker docker compose exec sio_test bash
+docker compose exec sio_test bash
 
 ### Migrations
 bin/console doctrine:migrations:migrate
