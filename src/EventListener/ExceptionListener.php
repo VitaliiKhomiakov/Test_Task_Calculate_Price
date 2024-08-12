@@ -7,6 +7,7 @@ use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ExceptionListener
@@ -20,7 +21,8 @@ class ExceptionListener
                 ['errors' => $exception->getErrors()],
                 Response::HTTP_BAD_REQUEST
             ),
-            $exception instanceof NotFoundHttpException => new JsonResponse(
+            $exception instanceof NotFoundHttpException,
+            $exception instanceof MethodNotAllowedHttpException => new JsonResponse(
                 ['error' => $exception->getMessage()],
                 Response::HTTP_NOT_FOUND
             ),
