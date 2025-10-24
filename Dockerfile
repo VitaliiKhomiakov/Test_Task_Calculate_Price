@@ -1,4 +1,4 @@
-FROM php:8.3-cli-alpine as sio_test
+FROM php:8.4-cli-alpine as sio_test
 RUN apk add --no-cache git zip bash
 
 # Setup php extensions
@@ -15,6 +15,9 @@ USER app
 
 COPY --chown=app . /app
 WORKDIR /app
+
+# Install dependencies
+RUN composer install --optimize-autoloader --no-interaction
 
 EXPOSE 8337
 
