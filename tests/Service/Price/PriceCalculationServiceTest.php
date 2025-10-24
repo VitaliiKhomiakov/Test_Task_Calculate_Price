@@ -8,9 +8,9 @@ use App\Entity\Coupon;
 use App\Entity\Product;
 use App\Entity\Tax;
 use App\Enum\CouponType;
-use App\Manager\CountryManager;
-use App\Manager\CouponManager;
-use App\Manager\ProductManager;
+use App\Manager\Interface\CountryManagerInterface;
+use App\Manager\Interface\CouponManagerInterface;
+use App\Manager\Interface\ProductManagerInterface;
 use App\Service\Price\DiscountService;
 use App\Service\Price\PriceCalculationService;
 use App\Service\Utils\TaxNumberParser;
@@ -38,11 +38,11 @@ class PriceCalculationServiceTest extends TestCase
             ->method('getRepository')
             ->willReturn($this->productRepository);
 
-        $this->couponManager = $this->createMock(CouponManager::class);
-        $this->countryManager = $this->createMock(CountryManager::class);
+        $this->couponManager = $this->createMock(CouponManagerInterface::class);
+        $this->countryManager = $this->createMock(CountryManagerInterface::class);
         $this->discountService = $this->createMock(DiscountService::class);
 
-        $this->productManager = $this->createMock(ProductManager::class);
+        $this->productManager = $this->createMock(ProductManagerInterface::class);
 
         $this->priceService = new PriceCalculationService(
             $this->productManager,

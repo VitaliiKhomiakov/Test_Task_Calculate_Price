@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace App\Manager;
 
 use App\Entity\Product;
+use App\Manager\Interface\ProductManagerInterface;
 use App\Repository\ProductRepository;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class ProductManager
+readonly class ProductManager implements ProductManagerInterface
 {
     public function __construct(
         private ProductRepository $productRepository,
