@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Service;
+namespace App\Service\Price;
 
 use App\Entity\Coupon;
 use App\Enum\CouponType;

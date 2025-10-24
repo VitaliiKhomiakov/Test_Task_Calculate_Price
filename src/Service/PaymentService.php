@@ -4,25 +4,32 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Enum\PaymentType;
-use App\Service\DTO\CalculatePriceDTO;
+use App\DTO\Request\CalculatePriceRequestDTO;
+use App\DTO\Request\PurchaseRequestDTO;
+use App\Service\Price\PriceCalculationService;
 use App\Service\Payment\PaymentFactory;
 
 readonly class PaymentService
 {
     public function __construct(
         private PaymentFactory $paymentFactory,
-        private PriceService $priceService
+        private PriceCalculationService $priceCalculationService
     )
     {
     }
 
-    public function process(CalculatePriceDTO $calculatePriceDTO, PaymentType $paymentType): void
+    public function process(PurchaseRequestDTO $request): void
     {
         // need to add a lock for accidentally duplicated request!
         // the purchase should also be rolled back in an error case
-        $totalPrice = $this->priceService->calculate($calculatePriceDTO);
-        $paymentSystem = $this->paymentFactory->providePaymentProcessor($paymentType);
+        $calculateRequest = new CalculatePriceRequestDTO(
+            product: $request->product,
+            taxNumber: $request->taxNumber,
+            couponCode: $request->couponCode
+        );
+        
+        $totalPrice = $this->priceCalculationService->calculate($calculateRequest);
+        $paymentSystem = $this->paymentFactory->providePaymentProcessor($request->getPaymentType());
         $paymentSystem->processPayment($totalPrice);
     }
 }

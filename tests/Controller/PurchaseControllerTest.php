@@ -41,7 +41,7 @@ class PurchaseControllerTest extends WebTestCase
         ];
 
         $client->request(Request::METHOD_POST, '/purchase', [], [], ['CONTENT_TYPE' => 'application/json'], json_encode($data));
-        self::assertResponseStatusCodeSame(400);
+        self::assertResponseStatusCodeSame(422);
 
         $responseContent = json_decode($client->getResponse()->getContent(), true);
         $this->assertArrayHasKey('errors', $responseContent);
@@ -59,7 +59,7 @@ class PurchaseControllerTest extends WebTestCase
         ];
 
         $client->request(Request::METHOD_POST, '/purchase', [], [], ['CONTENT_TYPE' => 'application/json'], json_encode($data));
-        self::assertResponseStatusCodeSame(400);
+        self::assertResponseStatusCodeSame(422);
 
         $responseContent = json_decode($client->getResponse()->getContent(), true);
         self::assertArrayHasKey('errors', $responseContent);
@@ -77,7 +77,7 @@ class PurchaseControllerTest extends WebTestCase
 
         $client->request(Request::METHOD_POST, '/purchase', [], [], ['CONTENT_TYPE' => 'application/json'], json_encode($data));
 
-        self::assertResponseStatusCodeSame(400);
+        self::assertResponseStatusCodeSame(422);
         $responseContent = json_decode($client->getResponse()->getContent(), true);
         self::assertArrayHasKey('errors', $responseContent);
     }

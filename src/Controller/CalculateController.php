@@ -4,32 +4,24 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Exception\ValidationException;
-use App\Service\PriceService;
-use App\Service\DTO\CalculatePriceDTO;
-use App\Validator\CalculateRequestValidator;
+use App\DTO\Request\CalculatePriceRequestDTO;
+use App\Service\Price\PriceCalculationService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\AsController;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[AsController]
 class CalculateController extends AbstractController
 {
-    public function __construct(private readonly PriceService $priceService)
-    {
-    }
+    public function __construct(private readonly PriceCalculationService $priceCalculationService) {}
 
-    /**
-     * @throws ValidationException
-     */
     #[Route('/calculate-price', name: 'calculate_price', methods: [Request::METHOD_POST])]
-    public function calculate(Request $request, CalculateRequestValidator $calculateRequestValidator): JsonResponse
+    public function calculate(#[MapRequestPayload] CalculatePriceRequestDTO $request): JsonResponse
     {
-        $data = $request->getPayload()->all();
-        $calculateRequestValidator->validate($data);
-        $total = $this->priceService->calculate(new CalculatePriceDTO($data));
+        $total = $this->priceCalculationService->calculate($request);
 
         return $this->json(['total' => $total]);
     }

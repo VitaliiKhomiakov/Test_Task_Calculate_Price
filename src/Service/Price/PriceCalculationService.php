@@ -2,32 +2,35 @@
 
 declare(strict_types=1);
 
-namespace App\Service;
+namespace App\Service\Price;
 
+use App\DTO\Request\CalculatePriceRequestDTO;
 use App\Manager\CountryManager;
 use App\Manager\CouponManager;
 use App\Manager\ProductManager;
-use App\Service\DTO\CalculatePriceDTO;
+use App\Service\Price\DiscountService;
+use App\Service\Utils\TaxNumberParser;
 use InvalidArgumentException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class PriceService
+readonly class PriceCalculationService
 {
     public function __construct(
         private ProductManager $productManager,
         private CouponManager $couponManager,
         private CountryManager $countryManager,
         private DiscountService $discountService,
+        private TaxNumberParser $taxNumberParser,
     ) {
     }
 
-    public function calculate(CalculatePriceDTO $calculatePriceDTO): float
+    public function calculate(CalculatePriceRequestDTO $request): float
     {
-        $product = $this->productManager->getProductById($calculatePriceDTO->getProductId());
+        $product = $this->productManager->getProductById($request->product);
 
         try {
             $country = $this->countryManager->getCountyByCode(
-                $this->getCountryCodeFromTaxNumber($calculatePriceDTO->getTaxNumber())
+                $this->taxNumberParser->getCountryCodeFromTaxNumber($request->taxNumber)
             );
         } catch (NotFoundHttpException $e) {
             throw new InvalidArgumentException('Tax number is not supported');
@@ -35,21 +38,11 @@ class PriceService
 
         $price = $product->getPrice();
 
-        if ($couponNumber = $calculatePriceDTO->getCoupon()) {
+        if ($couponNumber = $request->couponCode) {
             $coupon = $this->couponManager->getCouponByCode($couponNumber);
-            $price = $this->discountService->applyCoupon($product->getPrice(), $coupon);
+            $price = $this->discountService->applyCoupon($price, $coupon);
         }
 
         return $this->discountService->applyTaxRate($price, $country->getTax()?->getRate());
     }
-
-    public function getCountryCodeFromTaxNumber(string $taxNumber): string
-    {
-        if (preg_match('/^([A-Za-z]{2,})(\d{9,})$/', $taxNumber, $matches)) {
-            return mb_strtoupper($matches[1]);
-        }
-
-        throw new \InvalidArgumentException('Invalid tax number format');
-    }
-
 }

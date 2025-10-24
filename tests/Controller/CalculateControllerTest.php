@@ -37,7 +37,7 @@ class CalculateControllerTest extends WebTestCase
         ];
 
         $client->request(Request::METHOD_POST, '/calculate-price', [], [], ['CONTENT_TYPE' => 'application/json'], json_encode($data));
-        self::assertResponseStatusCodeSame(400);
+        self::assertResponseStatusCodeSame(422);
 
         $responseContent = json_decode($client->getResponse()->getContent(), true);
         $this->assertArrayHasKey('errors', $responseContent);
@@ -55,7 +55,7 @@ class CalculateControllerTest extends WebTestCase
         ];
 
         $client->request(Request::METHOD_POST, '/calculate-price', [], [], ['CONTENT_TYPE' => 'application/json'], json_encode($data));
-        self::assertResponseStatusCodeSame(400);
+        self::assertResponseStatusCodeSame(422);
 
         $responseContent = json_decode($client->getResponse()->getContent(), true);
         $this->assertArrayHasKey('errors', $responseContent);

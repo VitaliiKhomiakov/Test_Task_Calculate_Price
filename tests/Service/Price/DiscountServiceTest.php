@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Service;
+namespace App\Tests\Service\Price;
 
 use App\Entity\Coupon;
 use App\Enum\CouponType;

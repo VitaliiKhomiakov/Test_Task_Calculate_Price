@@ -2,6 +2,7 @@
 
 namespace App\Tests\Service;
 
+use App\DTO\Request\CalculatePriceRequestDTO;
 use App\Entity\Country;
 use App\Entity\Coupon;
 use App\Entity\Product;
@@ -10,15 +11,15 @@ use App\Enum\CouponType;
 use App\Manager\CountryManager;
 use App\Manager\CouponManager;
 use App\Manager\ProductManager;
-use App\Service\DiscountService;
-use App\Service\DTO\CalculatePriceDTO;
-use App\Service\PriceService;
+use App\Service\Price\DiscountService;
+use App\Service\Price\PriceCalculationService;
+use App\Service\Utils\TaxNumberParser;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class PriceServiceTest extends TestCase
+class PriceCalculationServiceTest extends TestCase
 {
     private $entityManager;
     private $productRepository;
@@ -43,11 +44,12 @@ class PriceServiceTest extends TestCase
 
         $this->productManager = $this->createMock(ProductManager::class);
 
-        $this->priceService = new PriceService(
+        $this->priceService = new PriceCalculationService(
             $this->productManager,
             $this->couponManager,
             $this->countryManager,
-            $this->discountService
+            $this->discountService,
+            new TaxNumberParser()
         );
     }
 
@@ -89,11 +91,11 @@ class PriceServiceTest extends TestCase
             ->method('applyTaxRate')
             ->willReturn(108.0);
 
-        $dto = new CalculatePriceDTO([
-            'product' => 1,
-            'taxNumber' => 'DE123456789',
-            'couponCode' => 'P10'
-        ]);
+        $dto = new CalculatePriceRequestDTO(
+            product: 1,
+            taxNumber: 'DE123456789',
+            couponCode: 'P10'
+        );
 
         $result = $this->priceService->calculate($dto);
         $this->assertEquals(108.0, $result);
@@ -105,10 +107,10 @@ class PriceServiceTest extends TestCase
             ->method('getProductById')
             ->willThrowException(new NotFoundHttpException());
 
-        $dto = new CalculatePriceDTO([
-            'product' => 999,
-            'taxNumber' => 'IT12345689'
-        ]);
+        $dto = new CalculatePriceRequestDTO(
+            product: 999,
+            taxNumber: 'IT12345689'
+        );
 
         $this->expectException(NotFoundHttpException::class);
         $this->priceService->calculate($dto);
@@ -116,7 +118,8 @@ class PriceServiceTest extends TestCase
 
     public function testGetCountryCodeFromTaxNumber(): void
     {
-        $result = $this->priceService->getCountryCodeFromTaxNumber('US123456789');
+        $taxNumberParser = new TaxNumberParser();
+        $result = $taxNumberParser->getCountryCodeFromTaxNumber('US123456789');
         $this->assertEquals('US', $result);
     }
 }
